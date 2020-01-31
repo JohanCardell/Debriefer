@@ -3,15 +3,16 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
-namespace Debriefer.Models
+namespace Debriefer.Model
 {
     public class Player
     {
         [Column("id")]
-        public string Id { get; set; }
+        public string Id { get; private set; }
         public string Name { get; set; }
-        public int? Wins { get; set; }
-        public int? Losses { get; set; }
+        public string Password {get; set;}
+        public int Wins { get; set; }
+        public int Losses { get; set; }
         public virtual IList<Force> Forces { get; set; }
         
         [InverseProperty("WinningPlayer")]
@@ -23,6 +24,8 @@ namespace Debriefer.Models
         public Player()
         {
             Id = Guid.NewGuid().ToString();
+            Wins = 0;
+            Losses = 0;
         }
     }
 }

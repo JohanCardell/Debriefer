@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Debriefer.Models
+namespace Debriefer.Model
 {
+    public enum GameOverCause { TimeOut, ObjectiveTaken }
     public class Report
     {
         [Column("id")]
@@ -17,13 +18,13 @@ namespace Debriefer.Models
 
         public int? WinningPlayerId { get; set; }
         public virtual Player WinningPlayer { get; set; }
-        public Nation Nation1 { get; set; }
+        public Force WinningForce { get; set; }
         public int? WinScore { get; set; }
         
 
         public int? LosingPlayerId { get; set; }
         public virtual Player LosingPlayer { get; set; }
-        public Nation Nation2 { get; set; }
+        public Force LosingForce { get; set; }
         public int? LossScore { get; set; }
 
         public Report()

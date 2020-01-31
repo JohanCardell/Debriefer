@@ -1,12 +1,14 @@
-﻿using Debriefer.Models;
+﻿using Debriefer.Model;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
 
-namespace Debriefer.Logic
+namespace Debriefer.Model
 {
     public class ReportsDBContext : DbContext
     {
-        
-        public ReportsDBContext():base()
+
+        public ReportsDBContext() : base()
         {
 
         }
@@ -20,7 +22,7 @@ namespace Debriefer.Logic
         private readonly string AccountKey = "C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==";
         private readonly string DatabaseName = "AfterActionReports";
 
-
+       
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)

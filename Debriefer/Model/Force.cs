@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
-namespace Debriefer.Models
+namespace Debriefer.Model
 {
     public enum Nation
     {
@@ -18,9 +18,9 @@ namespace Debriefer.Models
     [Owned]
     public class Force
     {
-        [ForeignKey("Player")]
+        [ForeignKey ("Player")]
         [Column("id")]
-        public string Id { get; set; }
+        public string Id { get; private set; }
         public string Name { get; set; }
         public Nation Nation { get; set; }
         public int Points { get; set; }

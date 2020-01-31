@@ -4,17 +4,19 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
-namespace Debriefer.Models
+namespace Debriefer.Model
 {
-    [Owned]
-    public class Round
+    public enum ScenarioType { FreeForAll, Encounter, NoRetreat }
+    
+    public class Scenario
     {
         [Column("id")]
         public string Id { get; set; }
-        public int Number { get; set; }
-        public string Comment { get; set; }
+        public string Name { get; set; }
+        public ScenarioType GetScenarioType { get; set; }
+        public string Description { get; set; }
 
-        public Round()
+        public Scenario()
         {
             Id = Guid.NewGuid().ToString();
         }

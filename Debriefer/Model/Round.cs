@@ -4,18 +4,17 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
-namespace Debriefer.Models
+namespace Debriefer.Model
 {
-    public enum GameOverCause { TimeOut, ObjectiveTaken}
     [Owned]
-    public class Scenario
+    public class Round
     {
         [Column("id")]
         public string Id { get; set; }
-        public string Name { get; set; }
-        public string Description { get; set; }
+        public int Number { get; set; }
+        public string Comment { get; set; }
 
-        public Scenario()
+        public Round()
         {
             Id = Guid.NewGuid().ToString();
         }

@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
-using Debriefer.Logic;
-using Debriefer.Models;
+using Debriefer.Control;
+using Debriefer.Model;
    
 
 namespace Debriefer
@@ -31,20 +31,15 @@ namespace Debriefer
     {
         static void Main(string[] args)
         {
-            var player = new Player { Name = "Test" };
+            var seed = new Seeds();
             using (var context = new ReportsDBContext())
             {
                 context.Database.EnsureDeleted();
                 context.Database.EnsureCreated();
-                context.Add(player);
+              //  context.AddRange(seed.PlayerSeed);
                 context.SaveChanges();
             }
-
-            using (var context = new ReportsDBContext())
-            {
-                var loadedPlayer = context.Players.FirstOrDefaultAsync();
-                Console.WriteLine($"Player crated: {player.Name} with Id: {player.Id}");
-            }
+            Console.WriteLine("OK");
         }
     }
 }
