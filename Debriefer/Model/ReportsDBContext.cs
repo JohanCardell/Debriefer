@@ -22,7 +22,7 @@ namespace Debriefer.Model
         private readonly string AccountKey = "C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==";
         private readonly string DatabaseName = "AfterActionReports";
 
-       
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
@@ -32,6 +32,7 @@ namespace Debriefer.Model
                 {
                     optionsBuilder.UseCosmos(AccountEndpoint, AccountKey, DatabaseName);
                     optionsBuilder.UseLazyLoadingProxies();
+                    optionsBuilder.EnableSensitiveDataLogging(true);
                 }
 
             }

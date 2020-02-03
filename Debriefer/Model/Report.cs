@@ -11,20 +11,22 @@ namespace Debriefer.Model
         public string Id { get; set; }
         public DateTime Date { get; set; }
         public GameOverCause GameOverCause { get; set; }
-        public int? ScenarioId { get; set; }
+        public string ScenarioId { get; set; }
         public virtual Scenario Scenario { get; set; }
         public virtual IList<Round> Rounds { get; set; }
 
 
-        public int? WinningPlayerId { get; set; }
+        public string WinningPlayerId { get; set; }
         public virtual Player WinningPlayer { get; set; }
-        public Force WinningForce { get; set; }
+        public string WinningForceId { get; set; }
+        public virtual Force WinningForce { get; set; }
         public int? WinScore { get; set; }
         
 
-        public int? LosingPlayerId { get; set; }
+        public string LosingPlayerId { get; set; }
         public virtual Player LosingPlayer { get; set; }
-        public Force LosingForce { get; set; }
+        public string LosingForceId { get; set; }
+        public virtual Force LosingForce { get; set; }
         public int? LossScore { get; set; }
 
         public Report()

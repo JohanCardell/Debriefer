@@ -8,11 +8,12 @@ namespace Debriefer.Model
     public class Player
     {
         [Column("id")]
-        public string Id { get; private set; }
+        public string Id { get;  set; }
         public string Name { get; set; }
         public string Password {get; set;}
         public int Wins { get; set; }
         public int Losses { get; set; }
+
         public virtual IList<Force> Forces { get; set; }
         
         [InverseProperty("WinningPlayer")]

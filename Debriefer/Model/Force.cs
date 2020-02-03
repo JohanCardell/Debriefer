@@ -15,15 +15,21 @@ namespace Debriefer.Model
         Germany,
         Russia
     }
-    [Owned]
+    public enum Period
+    {
+        EarlyWar,
+        MidWar,
+        LateWar
+    }
     public class Force
     {
-        [ForeignKey ("Player")]
         [Column("id")]
-        public string Id { get; private set; }
+        public string Id { get;  set; }
         public string Name { get; set; }
         public Nation Nation { get; set; }
+        public Period Period { get; set; }
         public int Points { get; set; }
+        public string PlayerId { get; set; }
         public virtual Player Player { get; set; }
         public Force()
         {

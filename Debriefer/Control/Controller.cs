@@ -108,7 +108,7 @@ namespace Debriefer.Control
                 Name = name,
                 Nation = nation,
                 Points = points,
-                Player = player 
+                //Player = player 
             });
         }
         public void Add(ReportsDBContext context, string dateTime, GameOverCause gameOverCause, Scenario scenario, Player winner, int winScore, Force winForce, Player loser, int losingScore, Force losingForce, List<Round> rounds)
