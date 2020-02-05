@@ -31,12 +31,16 @@ namespace Debriefer
     {
         static void Main(string[] args)
         {
-            var context = new ReportsDBContext();
-            var seed = new DataSeed();
-
             //context.Database.EnsureDeleted();
-            context.Database.EnsureCreated();
 
+            Console.WriteLine("Connecting...");
+            var context = new ReportsDBContext();
+            if(!context.Database.EnsureCreated())
+            {
+                Console.WriteLine("Connection failed");
+            }
+
+            //var seed = new DataSeed();
             //context.AddRange(seed.PlayerSeeds);
             //context.AddRange(seed.ForceSeeds);
             //context.AddRange(seed.ScenarioSeeds);
@@ -44,8 +48,8 @@ namespace Debriefer
 
             //context.SaveChanges();
 
-            var controller = new Controller(context);
-            controller.Run();
+            var userSession = new UserSession(context);
+            userSession.Run();
         }
     }
 }

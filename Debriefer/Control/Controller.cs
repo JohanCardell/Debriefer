@@ -10,15 +10,18 @@ namespace Debriefer.Control
 {
     public class Controller
     {
-        private ReportsDBContext model;
-        public Controller(ReportsDBContext model)
-        {
-            this.model = model;
-        }
+        private UserSession userSession;
+        private ReportsDBContext context;
         private InfoMessageView welcomeView;
         private NavigationMenuView mainMenuView;
+        private NavigationMenuView reportsMenuView;
         private LoginView loginView;
         private ReportsView reportsView;
+        public Controller(UserSession userSession)
+        {
+            this.context = userSession.context;
+            this.userSession = userSession;
+        }
 
         internal void Run()
         {
@@ -29,7 +32,7 @@ namespace Debriefer.Control
         {
             if (welcomeView == null) welcomeView = new InfoMessageView
             {
-                Message = "Welcome to this app",
+                Message = "Debriefer - The After Action Report tool",
                 Callback = GoToMainMenu
             };
             welcomeView.Display();
@@ -50,7 +53,7 @@ namespace Debriefer.Control
 
                     new NavigationMenuItemView
                     {
-                        Title = "View reports",
+                        Title = "Reports",
                         GoTo = GoToReports
                     },
                     new NavigationMenuItemView
@@ -63,9 +66,36 @@ namespace Debriefer.Control
             mainMenuView.Display();
         }
 
+        public void GoToReportsMenu()
+        {
+            if (reportsMenuView == null) reportsMenuView = new NavigationMenuView
+            {
+                Message = "Reports Menu",
+                MenuItems = new List<NavigationMenuItemView>
+                {
+                    new NavigationMenuItemView
+                    {
+                        Title = "View all reports",
+                        GoTo = reportsView.DisplayAllReports
+                    },
+                    new NavigationMenuItemView
+                    {
+                        Title = "Go back to main menu",
+                        GoTo = GoToMainMenu
+                    },
+                    new NavigationMenuItemView
+                    {
+                        Title = "Exit Program",
+                        GoTo = ()=>Environment.Exit(0)
+                    }
+                }
+            };
+            reportsMenuView.Display();
+        }
+
         private void GoToLoginScreen()
         {
-            loginView = new LoginView { ValidateLogin = ValidateLogin, LoginSuccessCallback = GoToProfile };
+            loginView = new LoginView { ValidateLogin = ValidateLogin, LoginSuccessCallback = SetCurrentUser};
             loginView.Display();
         }
 
@@ -74,7 +104,7 @@ namespace Debriefer.Control
             Player player;
             try
             {
-                player = model.Players.Single(p => p.Name == username); 
+                player = context.Players.Single(p => p.Name == username); 
             }
             catch (Exception ex)
             {
@@ -85,47 +115,34 @@ namespace Debriefer.Control
 
         private void GoToReports()
         {
-            var reports = model.Reports.OrderByDescending(r => r.Date).ToList();
-            //var firstReport = model.Reports.First ().LosingPlayer;
-            //Console.WriteLine(firstReport);
-            //var test = model.Reports.AsEnumerable();//
+            if (reportsView == null)
+            {
+                Console.WriteLine("Loading reports...");
+                reportsView = new ReportsView { reports = context.Reports.OrderByDescending(r => r.Date).ToList(), BackToMain = GoToMainMenu };
+                Console.Clear();
+            }
+            GoToReportsMenu();
+        }
 
-            //var reports = model.Reports
-
-            //    .Select(r => new
-            //    {
-            //        r.Date,
-            //        r.GameOverCause,
-            //        r.Scenario.ScenarioType,
-            //        r.WinningPlayer,
-            //        r.WinningForce,
-            //        r.WinScore,
-            //        r.LosingPlayer,
-            //        r.LosingForce,
-            //        r.LossScore
-            //    });
-            //var r = model.Reports
-            //    .Include(r => r.Scenario)
-            //    .Include(r => r.WinningPlayer)
-            //    .Include(r => r.WinningForce)
-            //    .Include(r => r.LosingPlayer)
-            //    .Include(r => r.LosingForce)
-            //    .ToList();
-            //foreach (var item in r)
-            //{
-            //    model.Entry(item).State = EntityState.Unchanged;
-            //}
-
-            reportsView = new ReportsView(reports);
-            reportsView.DisplayAllReports();
+        private void CreateForce(string name, Nation nation, Period period, int points)
+        {
+            context.Add(new Force
+            {
+                Name = name,
+                Nation = nation,
+                Period = period,
+                Player = userSession.player,
+                Points = points
+            });
         }
 
 
-
-        private void GoToProfile()
+        private void SetCurrentUser(string player)
         {
-            //init profile
-           // profileView.Display()
+            userSession.player = context.Players.Single(p => p.Name == player);
+            Console.WriteLine($"Welcome {userSession.player.Name}. You currently have {userSession.player.Wins} wins!");
+            Console.ReadKey(true);
+            GoToMainMenu();
         }
 
         public void Add(ReportsDBContext context, string name)

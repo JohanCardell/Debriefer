@@ -20,6 +20,8 @@ namespace Debriefer.View
             {
                 if (int.TryParse(Console.ReadKey(false).KeyChar.ToString(), out int choice) && choice <= MenuItems.Count)
                 {
+                    Console.WriteLine("Loading...");
+                    Console.Clear();
                     MenuItems[choice - 1].GoTo();
                     break;
                 }

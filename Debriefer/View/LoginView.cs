@@ -1,11 +1,14 @@
 ﻿using System;
+using Debriefer.Control;
+using Debriefer.Model;
 
 namespace Debriefer.View
 {
     public class LoginView
     {
         public Func<string,string, bool> ValidateLogin;
-        public Action LoginSuccessCallback;
+        //public Func<Player,Player> LoginSuccessCallback;
+        public Action<String> LoginSuccessCallback;
         internal void Display()
         {
             Console.Clear();
@@ -15,13 +18,13 @@ namespace Debriefer.View
             var password = GetPassword();
             if (ValidateLogin(username, password) == false)
             {
-                Console.WriteLine("Invalid Username or Password, press any key to continue;");
+                Console.WriteLine("\nInvalid Username or Password, press any key to continue;");
                 Console.ReadKey(true);
                 Display();
                 return;
             }
-
-            LoginSuccessCallback();
+            
+            LoginSuccessCallback(username);
         }
 
         private string GetPassword()
