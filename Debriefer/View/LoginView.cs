@@ -9,8 +9,9 @@ namespace Debriefer.View
         internal void Display()
         {
             Console.Clear();
-            Console.WriteLine("Type in your username:");
+            Console.Write("Type in your username: ");
             var username = Console.ReadLine();
+            Console.Write("Enter password: ");
             var password = GetPassword();
             if (ValidateLogin(username, password) == false)
             {

@@ -28,13 +28,7 @@ namespace Debriefer.Model
             if (!optionsBuilder.IsConfigured)
             {
                 optionsBuilder.UseCosmos(AccountEndpoint, AccountKey, DatabaseName);
-                if (!optionsBuilder.IsConfigured)
-                {
-                    optionsBuilder.UseCosmos(AccountEndpoint, AccountKey, DatabaseName);
-                    optionsBuilder.UseLazyLoadingProxies();
-                    optionsBuilder.EnableSensitiveDataLogging(true);
-                }
-
+                optionsBuilder.UseLazyLoadingProxies();
             }
         }
     }

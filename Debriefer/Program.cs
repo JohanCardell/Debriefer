@@ -1,10 +1,8 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore;
-using Debriefer.Control;
+﻿using Debriefer.Control;
 using Debriefer.Model;
+using System;
 using System.Linq;
-using System.Collections;
-   
+
 
 namespace Debriefer
 {
@@ -33,29 +31,21 @@ namespace Debriefer
     {
         static void Main(string[] args)
         {
+            var context = new ReportsDBContext();
             var seed = new DataSeed();
-            using (var context = new ReportsDBContext())
-            {
-                context.Database.EnsureDeleted();
-                context.Database.EnsureCreated();
-                context.AddRange(seed.PlayerSeeds);
-                context.AddRange(seed.ForceSeeds);
-                context.AddRange(seed.ReportSeeds);
-                context.SaveChanges();
-                //Console.WriteLine(context.Players.Single(p => p.Name == "Johan").Forces.Count);
-                //context.Players.Single(p => p.Name == "Johan").Forces.Add(seed.TestForce);
-                //Console.WriteLine(context.Players.Single(p => p.Name == "Johan").Forces.Count);
-                //var winners = context.Reports.Where(r => r.WinningPlayer.Name == "Johan");
-                var winners2 = context.Reports.ToList().Where(r => r.WinningPlayer.Name == "Johan");
-                foreach (var report in winners2)
-                {
-                    Console.WriteLine(report.LosingPlayer.Name);
-                }
 
+            //context.Database.EnsureDeleted();
+            context.Database.EnsureCreated();
 
+            //context.AddRange(seed.PlayerSeeds);
+            //context.AddRange(seed.ForceSeeds);
+            //context.AddRange(seed.ScenarioSeeds);
+            //context.AddRange(seed.ReportSeeds);
 
-            }
-            Console.WriteLine("OK");
+            //context.SaveChanges();
+
+            var controller = new Controller(context);
+            controller.Run();
         }
     }
 }

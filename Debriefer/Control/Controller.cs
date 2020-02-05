@@ -4,6 +4,7 @@ using System.Text;
 using Debriefer.Model;
 using Debriefer.View;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace Debriefer.Control
 {
@@ -17,6 +18,7 @@ namespace Debriefer.Control
         private InfoMessageView welcomeView;
         private NavigationMenuView mainMenuView;
         private LoginView loginView;
+        private ReportsView reportsView;
 
         internal void Run()
         {
@@ -83,7 +85,39 @@ namespace Debriefer.Control
 
         private void GoToReports()
         {
+            var reports = model.Reports.OrderByDescending(r => r.Date).ToList();
+            //var firstReport = model.Reports.First ().LosingPlayer;
+            //Console.WriteLine(firstReport);
+            //var test = model.Reports.AsEnumerable();//
 
+            //var reports = model.Reports
+
+            //    .Select(r => new
+            //    {
+            //        r.Date,
+            //        r.GameOverCause,
+            //        r.Scenario.ScenarioType,
+            //        r.WinningPlayer,
+            //        r.WinningForce,
+            //        r.WinScore,
+            //        r.LosingPlayer,
+            //        r.LosingForce,
+            //        r.LossScore
+            //    });
+            //var r = model.Reports
+            //    .Include(r => r.Scenario)
+            //    .Include(r => r.WinningPlayer)
+            //    .Include(r => r.WinningForce)
+            //    .Include(r => r.LosingPlayer)
+            //    .Include(r => r.LosingForce)
+            //    .ToList();
+            //foreach (var item in r)
+            //{
+            //    model.Entry(item).State = EntityState.Unchanged;
+            //}
+
+            reportsView = new ReportsView(reports);
+            reportsView.DisplayAllReports();
         }
 
 
@@ -91,7 +125,7 @@ namespace Debriefer.Control
         private void GoToProfile()
         {
             //init profile
-            //profileView.Display()
+           // profileView.Display()
         }
 
         public void Add(ReportsDBContext context, string name)

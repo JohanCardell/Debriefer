@@ -73,6 +73,27 @@ namespace Debriefer
             }
         };
 
+        public List<Scenario> ScenarioSeeds = new List<Scenario>
+        {
+            new Scenario
+            {
+                Id = "ScenarioSeed1",
+                ScenarioType = ScenarioType.Encounter,
+                Description = "Descriptive text"
+            },
+            new Scenario
+            {
+                Id = "ScenarioSeed2",
+                ScenarioType = ScenarioType.NoRetreat,
+                Description = "This is NoRetreat"
+            },
+            new Scenario
+            {
+                Id = "ScenarioSeed3",
+                ScenarioType = ScenarioType.FreeForAll,
+                Description = "This is FreeForAll"
+            }
+        };
 
         public List<Report> ReportSeeds = new List<Report>
         {
@@ -80,21 +101,15 @@ namespace Debriefer
             {
                 Id = "ReportSeed1",
                 Date = DateTime.Parse("2020-02-03"),
-                GameOverCause = GameOverCause.ObjectiveTaken,
+                GameOverCause = GameOverCause.Objective,
                 ScenarioId = "ScenarioSeed1",
-                Scenario = new Scenario()
-                {
-                    Id = "ScenarioId1",
-                    ScenarioType = ScenarioType.Encounter,
-                    Description = "Descriptive text"
-                },
                 Rounds = new List<Round>()
                 {
                     new Round { Id = "RoundSeed1.1", Number = 1, Comment = "Comment text" },
                     new Round { Id = "RoundSeed1.2", Number = 2, Comment = "Comment text" }
                 },
                 WinningPlayerId = "PlayerSeed1",
-                WinningForceId = "SeedForce1",
+                WinningForceId = "ForceSeed1",
                 WinScore = 6,
                 LosingPlayerId = "PlayerSeed2",
                 LosingForceId = "ForceSeed3",
@@ -107,12 +122,6 @@ namespace Debriefer
                 Date = DateTime.Parse("2020-02-01"),
                 GameOverCause = GameOverCause.TimeOut,
                 ScenarioId = "ScenarioSeed2",
-                Scenario = new Scenario()
-                {
-                    Id = "ScenarioId2",
-                    ScenarioType = ScenarioType.NoRetreat,
-                    Description = "This is NoRetreat"
-                },
                 Rounds = new List<Round>()
                 {
                     new Round()
@@ -129,11 +138,73 @@ namespace Debriefer
                     }
                 },
                 WinningPlayerId = "PlayerSeed1",
-                WinningForceId = "ForceSeed3",
+                WinningForceId = "ForceSeed1",
                 WinScore = 8,
                 LosingPlayerId = "PlayerSeed3",
                 LosingForceId = "ForceSeed4",
                 LossScore = 1
+            },
+            new Report
+            {
+                Id = "ReportSeed3",
+                Date = DateTime.Parse("2020-01-11"),
+                GameOverCause = GameOverCause.TimeOut,
+                ScenarioId = "ScenarioSeed2",
+                Rounds = new List<Round>()
+                {
+                    new Round()
+                    {
+                        Id = "RoundSeed3.1",
+                        Number = 1,
+                        Comment = "This is round 1"
+                    },
+                    new Round()
+                    {
+                        Id = "RoundSeed3.2",
+                        Number = 2,
+                        Comment = "This is round 2"
+                    }
+                },
+                WinningPlayerId = "PlayerSeed2",
+                WinningForceId = "ForceSeed3",
+                WinScore = 6,
+                LosingPlayerId = "PlayerSeed1",
+                LosingForceId = "ForceSeed1",
+                LossScore = 3
+            },
+            new Report
+            {
+                Id = "ReportSeed4",
+                Date = DateTime.Parse("2020-01-04"),
+                GameOverCause = GameOverCause.Objective,
+                ScenarioId = "ScenarioSeed3",
+                Rounds = new List<Round>()
+                {
+                    new Round()
+                    {
+                        Id = "RoundSeed4.1",
+                        Number = 1,
+                        Comment = "This is round 1"
+                    },
+                    new Round()
+                    {
+                        Id = "RoundSeed4.2",
+                        Number = 2,
+                        Comment = "This is round 2"
+                    },
+                    new Round()
+                    {
+                        Id = "RoundSeed4.3",
+                        Number = 2,
+                        Comment = "This is round 2"
+                    }
+                },
+                WinningPlayerId = "PlayerSeed3",
+                WinningForceId = "ForceSeed4",
+                WinScore = 5,
+                LosingPlayerId = "PlayerSeed1",
+                LosingForceId = "ForceSeed2",
+                LossScore = 4
             }
         };
     };
@@ -141,88 +212,5 @@ namespace Debriefer
 
 
 
-
-
-//    new Player
-//    {
-//        Name = "Kalle"
-//    },
-//    new Player
-//    {
-//        Name = "Vidar"
-//    }
-//};
-
-//// {
-//var ForcesSeed1 = new List<Force>() {
-//        new Force
-//        {
-//            Id = Guid.NewGuid().ToString(),
-//            Name = "Tanks",
-//            Nation = Nation.Germany,
-//            Points = 100
-//        },
-//        new Force
-//        {
-//            Id = Guid.NewGuid().ToString(),
-//            Name = "Grenadiers",
-//            Nation = Nation.Germany,
-//            Points = 100
-//        },
-//        new Force
-//        {
-//            Id = Guid.NewGuid().ToString(),
-//            Name = "Kursk",
-//            Nation = Nation.Germany,
-//            Points = 60
-//        }
-//    };
-//var ForceSeed2 = new List<Force>()
-//    {
-//        new Force
-//        {
-//            Id = Guid.NewGuid().ToString(),
-//            Name = "Fireflies",
-//            Nation = Nation.GreatBritain,
-//            Points = 100
-//        },
-//        new Force
-//        {
-//            Id = Guid.NewGuid().ToString(),
-//            Name = "Armored Rifles",
-//            Nation = Nation.America,
-//            Points = 100
-//        },
-//        new Force
-//        {
-//            Id = Guid.NewGuid().ToString(),
-//            Name = "Steel fist",
-//            Nation = Nation.Russia,
-//            Points = 100
-//        }
-//    };
-
-//var Id1 = Guid.NewGuid().ToString();
-//modelBuilder.Entity<Player>(p =>
-//    {
-//        p.HasData(new Player
-//        {
-//            Id = Id1,
-//            Name = "Johan"
-//        });
-//        p.OwnsOne(f => f.Forces).HasData(new
-//        {
-
-//            PlayerId = Id1,
-//            Name = "Fireflies",
-//            Nation = Nation.GreatBritain,
-//            Points = 100
-//        });
-//    });
-//    new Player
-//    {
-//        Name = "Kalle",
-//        Forces = ForceSeed2
-//    };
 
 
