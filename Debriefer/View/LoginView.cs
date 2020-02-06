@@ -12,7 +12,7 @@ namespace Debriefer.View
         internal void Display()
         {
             Console.Clear();
-            Console.Write("Type in your username: ");
+            Console.Write("Enter your username: ");
             var username = Console.ReadLine();
             Console.Write("Enter password: ");
             var password = GetPassword();

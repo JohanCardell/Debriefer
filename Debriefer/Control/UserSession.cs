@@ -10,7 +10,7 @@ namespace Debriefer.Control
         internal ReportsDBContext context;
         internal Controller controller;
         static internal bool UserLoggedIn = false;
-        internal Player player;
+        internal Player user;
 
         public UserSession(ReportsDBContext context)
         {

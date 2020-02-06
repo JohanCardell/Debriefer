@@ -15,6 +15,7 @@ namespace Debriefer
                 Id = "PlayerSeed1",
                 Name = "Johan",
                 Password = "password",
+                Admin = true,
                 Forces = new List<Force>()
             },
             new Player

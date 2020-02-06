@@ -11,6 +11,7 @@ namespace Debriefer.Model
         public string Id { get;  set; }
         public string Name { get; set; }
         public string Password {get; set;}
+        public bool Admin { get; set; }
         public int Wins { get; set; }
         public int Losses { get; set; }
 
@@ -25,6 +26,7 @@ namespace Debriefer.Model
         public Player()
         {
             Id = Guid.NewGuid().ToString();
+            Admin = false;
             Wins = 0;
             Losses = 0;
         }

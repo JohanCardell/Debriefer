@@ -31,23 +31,24 @@ namespace Debriefer
     {
         static void Main(string[] args)
         {
-            //context.Database.EnsureDeleted();
 
-            Console.WriteLine("Connecting...");
+            Console.WriteLine("Connecting to database...");
             var context = new ReportsDBContext();
+            //context.Database.EnsureDeleted();
             if(!context.Database.EnsureCreated())
             {
-                Console.WriteLine("Connection failed");
+                Console.WriteLine("Database connection failed");
             }
 
+            //Console.WriteLine("Seeding database...");
             //var seed = new DataSeed();
             //context.AddRange(seed.PlayerSeeds);
             //context.AddRange(seed.ForceSeeds);
             //context.AddRange(seed.ScenarioSeeds);
             //context.AddRange(seed.ReportSeeds);
-
             //context.SaveChanges();
 
+            Console.WriteLine("Creating new session...");
             var userSession = new UserSession(context);
             userSession.Run();
         }
