@@ -1,7 +1,6 @@
 ﻿using Debriefer.Control;
 using Debriefer.Model;
 using System;
-using System.Linq;
 
 
 namespace Debriefer
@@ -21,10 +20,6 @@ namespace Debriefer
     /// Shows stats on nation winratio etc
     /// Future features: images in report for each round. Arrows, bubbles etc.
     /// 
-    /// each model should have string id, based on GUID.
-    /// When searching for an object, find, do not search on id (not optimized in cosmos)
-    /// 
-    /// many-to-many. Do not use cross-tables
     /// 
     /// </summary>
     public class Program
@@ -32,8 +27,9 @@ namespace Debriefer
         static void Main(string[] args)
         {
 
-            Console.WriteLine("Connecting to database...");
+            Console.WriteLine("Connecting...");
             var context = new ReportsDBContext();
+            Console.WriteLine("Deleting current content on database...");
             context.Database.EnsureDeleted();
             Console.WriteLine("Checking database integrity...");
             context.Database.EnsureCreated();

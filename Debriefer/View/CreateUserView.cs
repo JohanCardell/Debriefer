@@ -2,7 +2,7 @@
 
 namespace Debriefer.View
 {
-    class CreateUserView
+    class NewUserDataScreen
     {
 
         public Action<string, string, bool> UserInputCallback;

@@ -1,22 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text;
 
 namespace Debriefer.Model
 {
     public class Player
     {
         [Column("id")]
-        public string Id { get;  set; }
+        public string Id { get; set; }
         public string Name { get; set; }
-        public string Password {get; set;}
+        public string Password { get; set; }
         public bool Admin { get; set; }
         public int Wins { get; set; }
         public int Losses { get; set; }
 
         public virtual IList<Force> Forces { get; set; }
-        
+
         [InverseProperty("WinningPlayer")]
         public virtual IList<Report> WinReports { get; set; }
 

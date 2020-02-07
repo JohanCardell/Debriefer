@@ -8,7 +8,7 @@ namespace Debriefer.Model
 {
     public enum Nation
     {
-        Allies,
+        Allies = 1,
         America,
         Axis,
         GreatBritain,
@@ -17,7 +17,7 @@ namespace Debriefer.Model
     }
     public enum Period
     {
-        EarlyWar,
+        EarlyWar = 1,
         MidWar,
         LateWar
     }

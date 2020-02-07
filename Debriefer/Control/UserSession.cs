@@ -1,7 +1,4 @@
 ﻿using Debriefer.Model;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Debriefer.Control
 {
@@ -17,6 +14,6 @@ namespace Debriefer.Control
             this.context = context;
             controller = new Controller(this);
         }
-        public void Run() { controller.Run(); } 
+        public void Run() { controller.Run(); }
     }
 }

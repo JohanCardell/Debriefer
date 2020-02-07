@@ -16,6 +16,8 @@ namespace Debriefer
                 Name = "Johan",
                 Password = "password",
                 Admin = true,
+                Wins = 2,
+                Losses = 2,
                 Forces = new List<Force>()
             },
             new Player
@@ -23,6 +25,9 @@ namespace Debriefer
                 Id = "PlayerSeed2",
                 Name = "Kalle",
                 Password = "password",
+                Admin = false,
+                Wins = 1,
+                Losses = 1,
                 Forces = new List<Force>()
             },
             new Player
@@ -30,6 +35,9 @@ namespace Debriefer
                 Id = "PlayerSeed3",
                 Name = "Vidar",
                 Password = "password",
+                Admin = false,
+                Wins = 1,
+                Losses = 1,
                 Forces = new List<Force>()
             }
         };

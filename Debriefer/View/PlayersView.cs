@@ -7,11 +7,11 @@ namespace Debriefer.View
 {
     public class PlayersView
     {
-        public Func<List<Player>> GetList;
+        public Func<List<Player>> CurrentPlayers;
 
         internal void DisplayAllPlayers()
         {
-            foreach (var player in (GetList()))
+            foreach (var player in (CurrentPlayers()))
                 {
                     Console.WriteLine(player.Name);
                 }

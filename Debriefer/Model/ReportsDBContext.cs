@@ -1,7 +1,4 @@
-﻿using Debriefer.Model;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace Debriefer.Model
 {
@@ -10,7 +7,6 @@ namespace Debriefer.Model
 
         public ReportsDBContext() : base()
         {
-
         }
 
         public virtual DbSet<Player> Players { get; set; }
