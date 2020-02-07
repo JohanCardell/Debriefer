@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Debriefer.Model
 {
-    public enum ScenarioType { FreeForAll, Encounter, NoRetreat }
+    public enum ScenarioType { FreeForAll = 1, Encounter, NoRetreat }
     
     public class Scenario
     {

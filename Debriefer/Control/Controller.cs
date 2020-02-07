@@ -13,72 +13,27 @@ namespace Debriefer.Control
         private ReportsDBContext context;
         private CreateUserView createUserView;
         private InfoMessageView welcomeView;
+        private NavigationMenuView forcesMenuView;
         private NavigationMenuView mainMenuView;
+        private NavigationMenuView playersMenuView;
         private NavigationMenuView reportsMenuView;
         private LoginView loginView;
+        private GetNewReportDataScreen newReportView; 
         private ReportsView reportsView;
+        private List<Player> GetPlayers() { return context.Players.OrderByDescending(p => p.Name).ToList(); }
+        private List<Report> GetReports() { return context.Reports.OrderByDescending(r => r.Date).ToList(); }
+        //private List<Force> GetForces() { return context.Forces.OrderByDescending(f => f.Nation.ToString()).ToList(); }
+
         public Controller(UserSession userSession)
         {
             this.context = userSession.context;
             this.userSession = userSession;
-            reportsView = new ReportsView { reports = context.Reports.OrderByDescending(r => r.Date).ToList(), BackToMain = GoToMainMenu };
 
         }
 
         internal void Run()
         {
-            GenerateMenus();
             GoToWelcomeScreen();
-        }
-
-        private void GenerateMenus()
-        {
-            if (mainMenuView == null) mainMenuView = new NavigationMenuView
-            {
-                Message = "MainMenu",
-                MenuItems = new List<NavigationMenuItemView>
-                {
-                    new NavigationMenuItemView
-                    {
-                        Title = "Login",
-                        GoTo = GoToLoginScreen
-                    },
-
-                    new NavigationMenuItemView
-                    {
-                        Title = "Reports",
-                        GoTo = GoToReportsMenu
-                    },
-                    new NavigationMenuItemView
-                    {
-                        Title = "Exit Program",
-                        GoTo = ()=>Environment.Exit(0)
-                    }
-                }
-            };
-            if (reportsMenuView == null) reportsMenuView = new NavigationMenuView
-            {
-                Message = "Reports Menu",
-                MenuItems = new List<NavigationMenuItemView>
-                {
-                    new NavigationMenuItemView
-                    {
-                        Title = "View all reports",
-                        GoTo = reportsView.DisplayAllReports
-                    },
-                    new NavigationMenuItemView
-                    {
-                        Title = "Go back to main menu",
-                        GoTo = GoToMainMenu
-                    },
-                    new NavigationMenuItemView
-                    {
-                        Title = "Exit Program",
-                        GoTo = ()=>Environment.Exit(0)
-                    }
-                }
-            };
-
         }
 
         public void GoToWelcomeScreen()
@@ -93,12 +48,24 @@ namespace Debriefer.Control
 
         private void GoToMainMenu()
         {
+            if (mainMenuView == null) mainMenuView = new NavigationMenuView
+            {
+                Message = "MainMenu",
+                MenuItems = new List<NavigationMenuItemView>
+                {
+                    new NavigationMenuItemView
+                    {
+                        Title = "Login",
+                        GoTo = GoToLoginScreen
+                    },
+                    new NavigationMenuItemView
+                    {
+                        Title = "Exit Program",
+                        GoTo = ()=>Environment.Exit(0)
+                    }
+                }
+            };
             mainMenuView.Display();
-        }
-
-        public void GoToReportsMenu()
-        {
-            reportsMenuView.Display();
         }
 
         private void GoToLoginScreen()
@@ -106,11 +73,78 @@ namespace Debriefer.Control
             loginView = new LoginView { ValidateLogin = ValidateLogin, LoginSuccessCallback = SetCurrentUser };
             loginView.Display();
         }
-        private void GoToCreateNewUserView()
+
+        private void GoToReportsMenu()
         {
-            createUserView = new CreateUserView { UserInputCallback = CreateUser };
+            if (reportsView == null)
+            {
+                reportsView = new ReportsView { CurrentReports = GetReports, Callback = GoToReportsMenu };
+            }
+            if (reportsMenuView == null) reportsMenuView = new NavigationMenuView
+            {
+                Message = "Reports Menu",
+                MenuItems = new List<NavigationMenuItemView>
+                {
+                    new NavigationMenuItemView
+                    {
+                        Title = "View all reports",
+                        GoTo = reportsView.DisplayAllReports
+                    },
+                    new NavigationMenuItemView
+                    {
+                        Title = "Create new report",
+                        GoTo = GoToNewReportScreen
+                    },
+                    new NavigationMenuItemView
+                    {
+                        Title = "Go back to main menu",
+                        GoTo = GoToMainMenu
+                    },
+                    new NavigationMenuItemView
+                    {
+                        Title = "Exit Program",
+                        GoTo = ()=>Environment.Exit(0)
+                    }
+                }
+            };
+            reportsMenuView.Display();
+        }
+
+        private void GoToCreateNewUserScreen()
+        {
+            createUserView = new CreateUserView { UserInputCallback = AddNewUser };
             createUserView.Display();
         }
+       
+        private void GoToNewReportScreen()
+        {
+            if(newReportView == null)
+            {
+                newReportView = new GetNewReportDataScreen() { ImportCurrentPlayers = GetPlayers, GenerateNewReport = AddNewReport };
+            }
+            newReportView.Display();
+            GoToReportsMenu();
+        }
+        
+        //TODO
+        private void GoToPlayersScreen()
+        {
+            if (playersMenuView == null)
+            {
+                new NavigationMenuItemView
+                {
+                    Title = "View all players",
+                    //GoTo = reportsView.Disp
+
+                };
+            }
+        }
+        
+        //TODO
+        private void GoToForcesScreen()
+        {
+        }
+        
         private bool ValidateLogin(string username, string password)
         {
             Player player;
@@ -124,42 +158,41 @@ namespace Debriefer.Control
             }
             return (player.Password == password);
         }
-        private void CreateForce(string name, Nation nation, Period period, int points)
-        {
-            context.Add(new Force
-            {
-                Name = name,
-                Nation = nation,
-                Period = period,
-                Player = userSession.user,
-                Points = points
-            });
-        }
+        
         private void SetCurrentUser(string userName)
         {
-            GiveAccessToCreators(userSession.user = context.Players.Single(p => p.Name == userName));
+            ExpandMenuOptionsBasedOnRights(userSession.user = context.Players.Single(p => p.Name == userName));
             Console.Clear();
             Console.WriteLine($"Welcome {userSession.user.Name}. You currently have {userSession.user.Wins} wins!");
             Console.ReadKey(true);
             GoToMainMenu();
         }
-        private void GiveAccessToCreators(Player user)
+        
+        private void ExpandMenuOptionsBasedOnRights(Player user)
         {
-            reportsMenuView.MenuItems.Add(new NavigationMenuItemView { Title = "New report", GoTo = GoToCreateReportView });
-            mainMenuView.MenuItems.Add(new NavigationMenuItemView { Title = "New force", GoTo = GoToCreateForceView });
-            if (user.Admin) mainMenuView.MenuItems.Add(new NavigationMenuItemView { Title = "New user", GoTo = GoToCreateNewUserView });
-        }
-        private void GoToCreateForceView()
-        {
-            throw new NotImplementedException();
-        }
-
-        private void GoToCreateReportView()
-        {
-            throw new NotImplementedException();
+            mainMenuView.MenuItems.RemoveAt(mainMenuView.MenuItems.FindIndex(m => m.Title == "Login"));
+            mainMenuView.MenuItems.Insert(0, new NavigationMenuItemView { Title = "Reports", GoTo = GoToReportsMenu });
+            mainMenuView.MenuItems.Insert(1, new NavigationMenuItemView { Title = "Players", GoTo = GoToPlayersScreen });
+            mainMenuView.MenuItems.Insert(2, new NavigationMenuItemView { Title = "Forces", GoTo = GoToForcesScreen });
+            if (user.Admin)
+            {
+                mainMenuView.MenuItems.Insert(3, new NavigationMenuItemView { Title = "New user", GoTo = GoToCreateNewUserScreen });
+            }
         }
 
-        private void CreateUser(string name, string password, bool admin)
+        //TODO
+        private void DisplayAllPlayers()
+        {
+            foreach (var player in context.Players)
+            {
+                Console.WriteLine(player.Name);
+            }
+            Console.ReadKey(true);
+            GoToMainMenu();
+        }
+
+
+        private void AddNewUser(string name, string password, bool admin)
         {
             context.Add(new Player { Name = name, Password = password, Admin = admin });
             context.SaveChanges();
@@ -174,43 +207,34 @@ namespace Debriefer.Control
 
         }
 
-        private void CreateReport()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Add(ReportsDBContext context, string name)
-        {
-            context.Add(new Player
-            {
-                Name = name
-            });
-        }
-        public void Add(ReportsDBContext context, string name, Nation nation, int points, Player player)
-        {
-            context.Add(new Force
-            {
-                Name = name,
-                Nation = nation,
-                Points = points,
-                //Player = player 
-            });
-        }
-        public void Add(ReportsDBContext context, string dateTime, GameOverCause gameOverCause, Scenario scenario, Player winner, int winScore, Force winForce, Player loser, int losingScore, Force losingForce, List<Round> rounds)
+        public void AddNewReport(DateTime date, GameOverCause gameOverCause, ScenarioType scenarioType, Player winningPlayer, Force winForce, int winScore, Player losingPlayer, Force losingForce, int lossScore, List<Round> rounds)
         {
             context.Add(new Report
             {
-                Date = DateTime.Parse(dateTime),
+                Date = date,
                 GameOverCause = gameOverCause,
-                Scenario = scenario,
-                WinningPlayer = winner,
+                Scenario = context.Scenarios.Single(s => s.ScenarioType == scenarioType),
+                WinningPlayer = winningPlayer,
                 WinScore = winScore,
                 WinningForce = winForce,
-                LosingPlayer = loser,
-                LossScore = losingScore,
+                LosingPlayer = losingPlayer,
+                LossScore = lossScore,
                 LosingForce = losingForce,
                 Rounds = rounds
             });
+            context.SaveChanges();
         }
+       
+
+        //public void Add(ReportsDBContext context, string name, Nation nation, int points, Player player)
+        //{
+        //    context.Add(new Force
+        //    {
+        //        Name = name,
+        //        Nation = nation,
+        //        Points = points,
+        //        //Player = player 
+        //    });
+        //}
     }
 }

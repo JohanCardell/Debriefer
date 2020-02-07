@@ -1,22 +1,21 @@
 ﻿using Debriefer.Model;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Debriefer.View
 
 {
     internal class ReportsView
     {
-        public List<Report> reports;
-        public Action BackToMain;
-
-        
+        public Func<List<Report>> CurrentReports;
+        private List<Report> reports;
+        public Action Callback;
 
         internal void DisplayAllReports()
         {
-            string overHead = "#".PadRight(15, ' ') + "Date".PadRight(15, ' ') + "Winner".PadRight(15, ' ') + "Loser ".PadRight(15, ' ');
-            Console.WriteLine(overHead);
+            reports = CurrentReports();
+            string header = "#".PadRight(15, ' ') + "Date".PadRight(15, ' ') + "Winner".PadRight(15, ' ') + "Loser ".PadRight(15, ' ');
+            Console.WriteLine(header);
             int number = 1;
             foreach (var r in reports)
             {
@@ -44,7 +43,7 @@ namespace Debriefer.View
         internal void DisplaySingleReport(Report r)
         {
 
-            string firstRowOverhead = "Date".PadRight(15, ' ') + "Game ender".PadRight(20, ' ') + "Scenario".PadRight(15, ' ') + "# of Rounds";
+            string firstRowOverhead = "Date".PadRight(15, ' ') + "Game Over Cause".PadRight(20, ' ') + "Scenario".PadRight(15, ' ') + "# of Rounds";
             string secondRowOverhead = "Winner".PadRight(15, ' ') + "Force name".PadRight(20, ' ') + "Nation".PadRight(15, ' ') + "Score";
             string thirdRowOverhead = "Loser".PadRight(15, ' ') + "Force name".PadRight(20, ' ') + "Nation".PadRight(15, ' ') + "Score";
             string firstRowStats = r.Date.ToString("yyyy/MM/dd").PadRight(15, ' ') + r.GameOverCause.ToString().PadRight(20, ' ') + r.Scenario.ScenarioType.ToString().PadRight(15, ' ') + $"{r.Rounds.Count}\n";
@@ -58,7 +57,7 @@ namespace Debriefer.View
             }
             Console.WriteLine("Press any key to return to menu");
             Console.ReadKey(true);
-            BackToMain();
+            Callback();
         }
     }
 }

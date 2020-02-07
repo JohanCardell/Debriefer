@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Debriefer.Model
 {
-    public enum GameOverCause { TimeOut, Objective }
+    public enum GameOverCause { TimeOut = 1, Objective }
     public class Report
     {
         [Column("id")]

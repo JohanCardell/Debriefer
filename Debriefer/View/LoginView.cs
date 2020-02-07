@@ -8,7 +8,7 @@ namespace Debriefer.View
     {
         public Func<string,string, bool> ValidateLogin;
         //public Func<Player,Player> LoginSuccessCallback;
-        public Action<String> LoginSuccessCallback;
+        public Action<string> LoginSuccessCallback;
         internal void Display()
         {
             Console.Clear();
